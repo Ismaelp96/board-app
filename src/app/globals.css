@@ -13,3 +13,8 @@
 	--color-navy-100: #c4c7d5;
 	--color-navy-50: #ecedf2;
 }
+
+@plugin 'tailwind-scrollbar' {
+	nocompatible: true;
+	preferredstrategy: 'pseudoelements';
+}

@@ -7,7 +7,7 @@ function SectionRoot({ className, ...props }: SectionRootProps) {
 	return (
 		<div
 			className={twMerge(
-				'bg-navy-800 rounded-xl border-[0.5px] border-navy-500 pt-3 flex flex-col gap-1',
+				'relative bg-navy-800 rounded-xl border-[0.5px] border-navy-500 pt-3 flex flex-col gap-1 h-full',
 				className,
 			)}
 			{...props}
@@ -50,7 +50,7 @@ function SectionContent({ className, ...props }: SectionContentProps) {
 	return (
 		<div
 			className={twMerge(
-				'flex flex-col gap-2.5 overflow-y-auto p-3',
+				'flex flex-col gap-2.5 overflow-y-auto p-3 absolute inset-0 top-10 scrollbar-thumb-navy-600 scrollbar scrollbar-w-1 scrollbar-track-transparent',
 				className,
 			)}
 			{...props}
