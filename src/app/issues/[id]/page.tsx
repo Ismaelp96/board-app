@@ -6,6 +6,8 @@ import { ArchiveIcon, MoveLeftIcon, ThumbsUpIcon } from 'lucide-react';
 import { Badge } from '@/components/badge';
 import { Button } from '@/components/button';
 import { IssueCommentList } from './issue-comments/issue-comments-list';
+import { Suspense } from 'react';
+import { IssueCommentSkeleton } from './issue-comments/issue-comments-skeleton';
 
 interface IssuePageProps {
 	params: Promise<{ id: string }>;
@@ -59,7 +61,9 @@ export default async function IssuePage({ params }: IssuePageProps) {
 				<span className='font-semibold'>Comments</span>
 				<form />
 				<div className='mt-3'>
-					<IssueCommentList issueId={issue?.id ?? ''} />
+					<Suspense fallback={<IssueCommentSkeleton />}>
+						<IssueCommentList issueId={issue?.id ?? ''} />
+					</Suspense>
 				</div>
 			</div>
 		</main>
