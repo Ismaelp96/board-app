@@ -6,7 +6,10 @@ import { SearchIcon } from 'lucide-react';
 import { Input } from '@/components/input';
 
 export function SearchInput() {
-	const [search, setSearch] = useQueryState('q', parseAsString.withDefault(''));
+	const [search, setSearch] = useQueryState(
+		'q',
+		parseAsString.withDefault('').withOptions({ shallow: false }),
+	);
 
 	function handleSearchUpdate(e: ChangeEvent<HTMLInputElement>) {
 		setSearch(e.target.value, {
