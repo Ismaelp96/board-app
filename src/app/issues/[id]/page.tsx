@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArchiveIcon, MoveLeftIcon, ThumbsUpIcon } from 'lucide-react';
 import { Badge } from '@/components/badge';
 import { Button } from '@/components/button';
+import { IssueCommentList } from './issue-comments/issue-comments-list';
 
 interface IssuePageProps {
 	params: Promise<{ id: string }>;
@@ -15,7 +16,7 @@ export const generateMetadata = async ({
 	const { id } = await params;
 	const issue = await getIssue({ id });
 	return {
-		title: `Issue ${issue.title}`,
+		title: `Issue ${issue?.title}`,
 	};
 };
 
@@ -41,7 +42,7 @@ export default async function IssuePage({ params }: IssuePageProps) {
 			<div className='flex items-center gap-2'>
 				<Badge>
 					<ArchiveIcon className='size-3' />
-					{statusLables[issue.status]}
+					{issue?.status ? statusLables[issue.status] : null}
 				</Badge>
 				<Button>
 					<ThumbsUpIcon className='size-3' />
@@ -49,10 +50,17 @@ export default async function IssuePage({ params }: IssuePageProps) {
 				</Button>
 			</div>
 			<div className='space-y-2'>
-				<h1 className='font-semibold text-2xl'>{issue.title}</h1>
+				<h1 className='font-semibold text-2xl'>{issue?.title}</h1>
 				<p className='text-navy-100 text-sm leading-relaxed'>
-					{issue.description}
+					{issue?.description}
 				</p>
+			</div>
+			<div className='flex flex-col gap-2'>
+				<span className='font-semibold'>Comments</span>
+				<form />
+				<div className='mt-3'>
+					<IssueCommentList issueId={issue?.id ?? ''} />
+				</div>
 			</div>
 		</main>
 	);
