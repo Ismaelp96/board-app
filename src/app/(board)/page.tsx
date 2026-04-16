@@ -62,7 +62,7 @@ export default async function Board({ searchParams }: BoardProps) {
 				<Section.Header>
 					<Section.Title>
 						<ArchiveIcon className='size-3' />
-						To-do
+						To-Do
 					</Section.Title>
 					<Section.IssueCount>{issues.todo.length}</Section.IssueCount>
 				</Section.Header>

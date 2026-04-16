@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { Badge, BadgeProps } from './badge';
 
 interface SectionRootProps extends ComponentProps<'div'> {}
 
@@ -25,16 +26,12 @@ function SectionHeader({ className, ...props }: SectionHeaderProps) {
 	);
 }
 
-interface SectionTitleProps extends ComponentProps<'span'> {}
-function SectionTitle({ className, ...props }: SectionTitleProps) {
+interface SectionTitleProps extends BadgeProps {}
+function SectionTitle({ children, className, ...props }: SectionTitleProps) {
 	return (
-		<span
-			className={twMerge(
-				'bg-navy-700 rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs',
-				className,
-			)}
-			{...props}
-		/>
+		<Badge className={className} {...props}>
+			{children}
+		</Badge>
 	);
 }
 
