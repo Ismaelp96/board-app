@@ -14,6 +14,8 @@ import { IssueCommentList } from './issue-comments/issue-comments-list';
 import { Suspense } from 'react';
 import { IssueCommentSkeleton } from './issue-comments/issue-comments-skeleton';
 import { Input } from '@/components/input';
+import { IssueLikkeButton } from './issue-comments/issue-like-button';
+import { Skeleton } from '@/components/skeleton';
 
 interface IssuePageProps {
 	params: Promise<{ id: string }>;
@@ -52,10 +54,9 @@ export default async function IssuePage({ params }: IssuePageProps) {
 					<ArchiveIcon className='size-3' />
 					{issue?.status ? statusLables[issue.status] : null}
 				</Badge>
-				<Button>
-					<ThumbsUpIcon className='size-3' />
-					<span className='text-sm'>12</span>
-				</Button>
+				<Suspense fallback={<Skeleton className='h-7 w-16' />}>
+					<IssueLikkeButton issueId={issue?.id ?? ''} />
+				</Suspense>
 			</div>
 			<div className='space-y-2'>
 				<h1 className='font-semibold text-2xl'>{issue?.title}</h1>
