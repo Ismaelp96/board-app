@@ -1,10 +1,11 @@
+import z from 'zod';
+import { ComponentProps, MouseEvent } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ThumbsUpIcon } from 'lucide-react';
+
 import type { IssueInteractionsResponseSchema } from '@/api/routes/schemas/issue-interactions';
 import { Button } from './button';
-import { ComponentProps } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ToggleLike } from '@/http/toggle-like';
-import z from 'zod';
 
 interface LikeButtonProps extends ComponentProps<'button'> {
 	issueId: string;
@@ -20,15 +21,15 @@ export function LikeButton({
 	initialLiked = false,
 }: LikeButtonProps) {
 	const queryClient = useQueryClient();
-	const { mutate: handleToggleLike, isPending } = useMutation({
+
+	const { mutate: onToggleLike, isPending } = useMutation({
 		mutationFn: () => ToggleLike({ issueId }),
 		onMutate: async () => {
-			const previousData = queryClient.getQueryData<IssueInteractionsReponse>([
-				'issue-likes',
-				issueId,
-			]);
-			queryClient.setQueryData<IssueInteractionsReponse>(
-				['issue-likes', issueId],
+			const previousData = queryClient.getQueriesData<IssueInteractionsReponse>(
+				{ queryKey: ['issue-likes'] },
+			);
+			queryClient.setQueriesData<IssueInteractionsReponse>(
+				{ queryKey: ['issue-likes'] },
 				(old) => {
 					if (!old) {
 						return undefined;
@@ -54,15 +55,21 @@ export function LikeButton({
 		},
 		onError: async (_erro, _params, context) => {
 			if (context?.previousData) {
-				queryClient.setQueryData<IssueInteractionsReponse>(
-					['issue-likes', issueId],
-					context.previousData,
-				);
+				for (const [queryKey, data] of context.previousData) {
+					queryClient.setQueryData<IssueInteractionsReponse>(queryKey, data);
+				}
 			}
 		},
 	});
 
 	const liked = initialLiked;
+
+	function handleToggleLike(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		onToggleLike();
+	}
 
 	return (
 		<Button
@@ -70,7 +77,7 @@ export function LikeButton({
 			className='data-[liked=true]:bg-indigo-600 data-[liked=true]:text-white data-[liked=true]:hover:bg-indigo-500'
 			aria-label={liked ? 'unlike' : 'Like'}
 			disabled={isPending}
-			onClick={() => handleToggleLike()}>
+			onClick={handleToggleLike}>
 			<ThumbsUpIcon className='size-3' />
 			<span className='text-sm'>{initialLikes}</span>
 		</Button>
