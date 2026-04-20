@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
-import './globals.css';
 import { ReactQueryProvider } from '@/lib/react-query';
+
+import './globals.css';
+import React from 'react';
 
 export const metadata: Metadata = {
 	title: {
@@ -16,15 +18,20 @@ export const metadata: Metadata = {
 const interFont = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
+	modal,
 	children,
 }: Readonly<{
+	modal: React.ReactNode;
 	children: React.ReactNode;
 }>) {
 	return (
 		<html lang='en' className={interFont.className}>
 			<body className='bg-navy-950 text-navy-50 antialiased'>
 				<ReactQueryProvider>
-					<NuqsAdapter>{children}</NuqsAdapter>
+					<NuqsAdapter>
+						{modal}
+						{children}
+					</NuqsAdapter>
 				</ReactQueryProvider>
 			</body>
 		</html>
