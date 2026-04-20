@@ -1,11 +1,14 @@
 import { IssueSchema } from '@/api/routes/get-issue';
 import { clientEnv } from '@/env';
+import { cacheLife } from 'next/cache';
 
 interface GetIssueParams {
 	id: string;
 }
 
 export async function getIssue({ id }: GetIssueParams) {
+	'use cache';
+	cacheLife('default');
 	try {
 		const url = new URL(`/api/issues/${id}`, clientEnv.NEXT_PUBLIC_API_URL);
 
